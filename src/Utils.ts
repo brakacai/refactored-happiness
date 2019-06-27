@@ -1,7 +1,4 @@
-import {
-  DestinyComponentType,
-  BungieMembershipType
-} from "bungie-api-ts/destiny2";
+import { DestinyComponentType, BungieMembershipType } from "bungie-api-ts/destiny2";
 import { get } from "request";
 
 /**
@@ -17,31 +14,22 @@ interface BungieAPIParams {
  * @param data uri and params to call the API
  * @param bungiekey the API Key to authorize the call
  */
-export async function getFromBungie<T>(
-  data: BungieAPIParams,
-  bungiekey: string
-): Promise<T> {
+export async function getFromBungie<T>(data: BungieAPIParams, bungiekey: string): Promise<T> {
   const url = new URL(`https://www.bungie.net/Platform/${data.uri}`);
   // Normalize components as an array.
   if (data.components) {
-    data.components = Array.isArray(data.components)
-      ? data.components
-      : [data.components];
+    data.components = Array.isArray(data.components) ? data.components : [data.components];
     url.searchParams.set("components", data.components.join(","));
   }
   return new Promise<T>((resolve, reject): void => {
-    get(
-      url.toString(),
-      { headers: { "X-API-Key": bungiekey } },
-      (err, response): void => {
-        if (err) {
-          reject(err);
-        }
-        if (response && response.statusCode === 200) {
-          resolve(JSON.parse(response.body) as T);
-        }
+    get(url.toString(), { headers: { "X-API-Key": bungiekey } }, (err, response): void => {
+      if (err) {
+        reject(err);
       }
-    );
+      if (response && response.statusCode === 200) {
+        resolve(JSON.parse(response.body) as T);
+      }
+    });
   });
 }
 

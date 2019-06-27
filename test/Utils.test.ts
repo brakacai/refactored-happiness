@@ -11,21 +11,13 @@ describe("Utils", () => {
         BungieMembershipType.TigerXbox
       ];
       curatedPlatform.forEach(platform => {
-        expect(isPlatformSupported(platform), `${platform} is not recognized`)
-          .to.be.true;
+        expect(isPlatformSupported(platform), `${platform} is not recognized`).to.be.true;
       });
     });
 
     it("should return false for non-curated platforms", () => {
-      [
-        BungieMembershipType.None,
-        BungieMembershipType.BungieNext,
-        BungieMembershipType.All
-      ].forEach(platform => {
-        expect(
-          isPlatformSupported(platform),
-          `${platform} is wrongly recognized`
-        ).to.be.false;
+      [BungieMembershipType.None, BungieMembershipType.BungieNext, BungieMembershipType.All].forEach(platform => {
+        expect(isPlatformSupported(platform), `${platform} is wrongly recognized`).to.be.false;
       });
     });
   });

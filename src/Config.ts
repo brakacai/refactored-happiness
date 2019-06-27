@@ -25,11 +25,7 @@ export class ConfigFile {
   // #region Config file paths.
   private static CONFIG_FOLDER_NAME = "ghost-discord";
   private static CONFIG_FILE_NAME = "config.json";
-  private static CONFIG_FILE_PATH = path.join(
-    os.homedir(),
-    ConfigFile.CONFIG_FOLDER_NAME,
-    ConfigFile.CONFIG_FILE_NAME
-  );
+  private static CONFIG_FILE_PATH = path.join(os.homedir(), ConfigFile.CONFIG_FOLDER_NAME, ConfigFile.CONFIG_FILE_NAME);
   // #endregion
 
   /**
@@ -50,10 +46,7 @@ export class ConfigFile {
   public static async createNewConfig(): Promise<ConfigFile> {
     const answers = await ConfigFile.getInfoFromUser();
     const apiKey: string = answers.API_KEY;
-    const { playerId, platform } = await ConfigFile.getPlayerIdFromPlayerName(
-      answers.PLAYER_NAME,
-      apiKey
-    );
+    const { playerId, platform } = await ConfigFile.getPlayerIdFromPlayerName(answers.PLAYER_NAME, apiKey);
     const configFileData = {
       platform: platform,
       apiKey: apiKey,
@@ -158,8 +151,7 @@ export class ConfigFile {
       {
         name: "API_KEY",
         type: "password",
-        message:
-          "What is your Bungie.net API-Key? (see https://bungie.net/en/Application/Create)",
+        message: "What is your Bungie.net API-Key? (see https://bungie.net/en/Application/Create)",
         mask: "*"
       },
       {
@@ -179,31 +171,20 @@ export class ConfigFile {
    * @param playerName A BattleTag/PSN ID/GamerTag/(SteamId?)
    * @param apiKey The API key to use
    */
-  private static async getPlayerIdFromPlayerName(
-    playerName: string,
-    apiKey: string
-  ): Promise<PartialConfigFileData> {
+  private static async getPlayerIdFromPlayerName(playerName: string, apiKey: string): Promise<PartialConfigFileData> {
     // Call the server and get the infos.
-    const playersInfoResponse = await getFromBungie<
-      ServerResponse<UserInfoCard[]>
-    >(
+    const playersInfoResponse = await getFromBungie<ServerResponse<UserInfoCard[]>>(
       {
-        uri: `/Destiny2/SearchDestinyPlayer/${
-          BungieMembershipType.All
-        }/${encodeURIComponent(playerName)}`
+        uri: `/Destiny2/SearchDestinyPlayer/${BungieMembershipType.All}/${encodeURIComponent(playerName)}`
       },
       apiKey
     );
 
     // Get the platformID and playerId.
-    if (
-      playersInfoResponse.Response &&
-      playersInfoResponse.Response.length > 0
-    ) {
+    if (playersInfoResponse.Response && playersInfoResponse.Response.length > 0) {
       return {
         playerId: playersInfoResponse.Response[0].membershipId as string,
-        platform: playersInfoResponse.Response[0]
-          .membershipType as BungieMembershipType
+        platform: playersInfoResponse.Response[0].membershipType as BungieMembershipType
       };
     } else {
       throw new Error("Player not found");
