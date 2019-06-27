@@ -23,7 +23,7 @@ type PartialConfigFileData = {
  * Config-factory. Either get one from a path, or create a new one from user inputs.
  */
 export class ConfigFile {
-  //#region Config file paths.
+  // #region Config file paths.
   private static CONFIG_FOLDER_NAME = "ghost-discord";
   private static CONFIG_FILE_NAME = "config.json";
   private static CONFIG_FILE_PATH = path.join(
@@ -31,7 +31,7 @@ export class ConfigFile {
     ConfigFile.CONFIG_FOLDER_NAME,
     ConfigFile.CONFIG_FILE_NAME
   );
-  //#endregion
+  // #endregion
 
   /**
    * The data of the user, useful for querying Bungie API.
@@ -44,7 +44,7 @@ export class ConfigFile {
     this._data = v;
   }
 
-  //#region Factories & constructor
+  // #region Factories & constructor
   /**
    * Create a new ConfigFile from scratch
    */
@@ -80,11 +80,9 @@ export class ConfigFile {
     if (this.hasConfigFile(path)) {
       let configFile;
       try {
-        configFile = JSON.parse(
-          fs.readFileSync(path).toString()
-        );  
+        configFile = JSON.parse(fs.readFileSync(path).toString());
       } catch (error) {
-        console.warn(`Failed to read config file at: ${path}.`)
+        console.warn(`Failed to read config file at: ${path}.`);
       }
       if (ConfigFile.isConfigFileValid(configFile)) {
         console.log("Config file found");
@@ -99,9 +97,9 @@ export class ConfigFile {
   private constructor(configFileData: ConfigFileData) {
     this.data = configFileData;
   }
-  //#endregion
+  // #endregion
 
-  //#region File Manipulation functions
+  // #region File Manipulation functions
   private static hasConfigFile(configFilePath: string): boolean {
     try {
       fs.accessSync(configFilePath, fs.constants.R_OK);
@@ -135,7 +133,7 @@ export class ConfigFile {
       fs.writeFileSync(this.CONFIG_FILE_PATH, JSON.stringify(configFileData));
     }
   }
-  //#endregion
+  // #endregion
 
   /**
    * Prompt some questions to the user to get his basic infos.
@@ -171,7 +169,9 @@ export class ConfigFile {
     apiKey: string
   ): Promise<PartialConfigFileData> {
     // Call the server and get the infos.
-    const playersInfoResponse = await getFromBungie<ServerResponse<UserInfoCard[]>>(
+    const playersInfoResponse = await getFromBungie<
+      ServerResponse<UserInfoCard[]>
+    >(
       {
         uri: `/Destiny2/SearchDestinyPlayer/${
           BungieMembershipType.All

@@ -4,7 +4,11 @@
   "description": "A headless Discord-RPC client for Destiny 2",
   "main": "index.js",
   "scripts": {
-    "test": "mocha --require ts-node/register test/**/*.ts",
+    "test": "nyc mocha",
+    "build": "tsc",
+    "lint": "eslint \"{{test,src}/**/*.ts,*.js}\"",
+    "lint-fix": "eslint --fix \"{{test,src}/**/*.ts,*.js}\"",
+    "coverage": "nyc report --reporter=text-lcov | coveralls",
     "semantic-release": "semantic-release"
   },
   "repository": {
@@ -32,13 +36,16 @@
     "@typescript-eslint/parser": "^1.11.0",
     "bungie-api-ts": "^2.0.0",
     "chai": "^4.2.0",
+    "coveralls": "^3.0.4",
     "cz-conventional-changelog": "^2.1.0",
     "eslint": "^6.0.1",
     "eslint-config-prettier": "^6.0.0",
     "inquirer": "^6.4.1",
     "mocha": "^6.1.4",
+    "nyc": "^14.1.1",
     "prettier": "^1.18.2",
     "semantic-release": "^15.13.18",
+    "source-map-support": "^0.5.12",
     "ts-node": "^8.3.0",
     "typescript": "^3.5.2"
   },
@@ -53,7 +60,7 @@
     }
   },
   "lint-staged": {
-    "*.{ts,js,css,json,md}": [
+    "*.{css,json,md}": [
       "prettier --write",
       "git add"
     ],

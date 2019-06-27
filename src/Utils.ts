@@ -35,9 +35,9 @@ export async function getFromBungie<T>(
 }
 
 export enum CuratedPlatform {
-  pc='pc',
-  playstation='playstation',
-  xbox='xbox'
+  pc = "pc",
+  playstation = "playstation",
+  xbox = "xbox"
 }
 
 export function isValidPlatform(
