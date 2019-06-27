@@ -3,9 +3,14 @@
   "version": "0.0.0-development",
   "description": "A headless Discord-RPC client for Destiny 2",
   "main": "index.js",
+  "preview": true,
+  "engines": {
+    "node": ">=10.x"
+  },
   "scripts": {
     "test": "nyc mocha",
-    "build": "tsc",
+    "build": "rimraf dist && tsc",
+    "start": "node ./dist/index.js",
     "lint": "eslint \"{{test,src}/**/*.ts,*.js}\"",
     "lint-fix": "eslint --fix \"{{test,src}/**/*.ts,*.js}\"",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
@@ -44,6 +49,7 @@
     "mocha": "^6.1.4",
     "nyc": "^14.1.1",
     "prettier": "^1.18.2",
+    "rimraf": "^2.6.3",
     "semantic-release": "^15.13.18",
     "source-map-support": "^0.5.12",
     "ts-node": "^8.3.0",
