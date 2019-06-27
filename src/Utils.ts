@@ -34,8 +34,14 @@ export async function getFromBungie<T>(
   });
 }
 
+export enum CuratedPlatform {
+  pc='pc',
+  playstation='playstation',
+  xbox='xbox'
+}
+
 export function isValidPlatform(
   platform: string
 ): platform is "pc" | "xbox" | "playstation" {
-  return platform !== "pc" && platform !== "xbox" && platform !== "playstation";
+  return Object.values(CuratedPlatform).includes(platform);
 }

@@ -78,9 +78,14 @@ export class ConfigFile {
    */
   public static getConfigFromPath(path: string): Promise<ConfigFile> {
     if (this.hasConfigFile(path)) {
-      const configFile = JSON.parse(
-        fs.readFileSync(ConfigFile.CONFIG_FILE_PATH).toString()
-      );
+      let configFile;
+      try {
+        configFile = JSON.parse(
+          fs.readFileSync(path).toString()
+        );  
+      } catch (error) {
+        console.warn(`Failed to read config file at: ${path}.`)
+      }
       if (ConfigFile.isConfigFileValid(configFile)) {
         console.log("Config file found");
         return Promise.resolve(new ConfigFile(configFile));
@@ -108,7 +113,7 @@ export class ConfigFile {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private static isConfigFileValid(obj: any): obj is ConfigFileData {
-    if (!obj.playerId || !obj.apiKey) {
+    if (!obj || !obj.playerId || !obj.apiKey) {
       return false;
     }
     return isValidPlatform(obj.platform);
@@ -127,7 +132,7 @@ export class ConfigFile {
       if (error.code !== "ENOENT") {
         throw error;
       }
-      fs.writeFileSync(this.CONFIG_FILE_PATH, configFileData);
+      fs.writeFileSync(this.CONFIG_FILE_PATH, JSON.stringify(configFileData));
     }
   }
   //#endregion
