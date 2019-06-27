@@ -104,11 +104,11 @@ export class ConfigFile {
   }
   //#endregion
 
+  //#region File Manipulation functions
   /**
    * Check if the file at the configFilePath is readable.
    * @param configFilePath a path to a configFile
    */
-  //#region File Manipulation functions
   private static hasConfigFile(configFilePath: string): boolean {
     try {
       fs.accessSync(configFilePath, fs.constants.R_OK);
