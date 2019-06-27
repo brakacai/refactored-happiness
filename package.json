@@ -34,7 +34,8 @@
     "eslint-config-prettier": "^6.0.0",
     "inquirer": "^6.4.1",
     "prettier": "^1.18.2",
-    "semantic-release": "^15.13.18"
+    "semantic-release": "^15.13.18",
+    "typescript": "^3.5.2"
   },
   "config": {
     "commitizen": {

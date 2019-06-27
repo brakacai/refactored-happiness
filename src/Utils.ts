@@ -1,16 +1,15 @@
-import {
-  DestinyComponentType,
-  DestinyProfileResponse
-} from "bungie-api-ts/destiny2";
-import { get as Get } from "request";
-import request = require("request");
+import { DestinyComponentType } from "bungie-api-ts/destiny2";
+import { get } from "request";
 
 interface BungieSearchParams {
   uri: string;
   components?: DestinyComponentType | DestinyComponentType[];
 }
 
-export async function get(data: BungieSearchParams, bungiekey: string) {
+export async function getFromBungie<T>(
+  data: BungieSearchParams,
+  bungiekey: string
+): Promise<T> {
   const url = new URL(`https://www.bungie.net/Platform/${data.uri}`);
   // Normalize components as an array.
   if (data.components) {
@@ -19,16 +18,16 @@ export async function get(data: BungieSearchParams, bungiekey: string) {
       : [data.components];
     url.searchParams.set("components", data.components.join(","));
   }
-  return new Promise((resolve, reject) => {
-    Get(
+  return new Promise<T>((resolve, reject): void => {
+    get(
       url.toString(),
       { headers: { "X-API-Key": bungiekey } },
-      (err, response) => {
+      (err, response): void => {
         if (err) {
           reject(err);
         }
         if (response && response.statusCode === 200) {
-          resolve(JSON.parse(response.body) as any);
+          resolve(JSON.parse(response.body) as T);
         }
       }
     );

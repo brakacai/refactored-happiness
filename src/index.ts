@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { ConfigFile } from "./Config";
 
 (async function() {
