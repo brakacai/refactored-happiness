@@ -1,13 +1,21 @@
-import { DestinyComponentType } from "bungie-api-ts/destiny2";
+import { DestinyComponentType, BungieMembershipType } from "bungie-api-ts/destiny2";
 import { get } from "request";
 
-interface BungieSearchParams {
+/**
+ * The param to send to @function getFromBungie to get some data.
+ */
+interface BungieAPIParams {
   uri: string;
   components?: DestinyComponentType | DestinyComponentType[];
 }
 
+/**
+ * Call the [Bungie.Net API](https://github.com/Bungie-net/api)
+ * @param data uri and params to call the API
+ * @param bungiekey the API Key to authorize the call
+ */
 export async function getFromBungie<T>(
-  data: BungieSearchParams,
+  data: BungieAPIParams,
   bungiekey: string
 ): Promise<T> {
   const url = new URL(`https://www.bungie.net/Platform/${data.uri}`);
@@ -34,14 +42,17 @@ export async function getFromBungie<T>(
   });
 }
 
-export enum CuratedPlatform {
-  pc = "pc",
-  playstation = "playstation",
-  xbox = "xbox"
-}
+/**
+ * Supported BungieMembershipType.
+ */
+export const CURATED_PLATFORM: BungieMembershipType[] = [BungieMembershipType.TigerBlizzard,BungieMembershipType.TigerPsn,BungieMembershipType.TigerXbox];
 
-export function isValidPlatform(
-  platform: string
-): platform is "pc" | "xbox" | "playstation" {
-  return Object.values(CuratedPlatform).includes(platform);
+/**
+ * Check if the BungieMembershipType is supported/valid.
+ * @param platform the BungieMembershipType if all's good.
+ */
+export function isPlatformSupported(
+  platform: number
+): boolean {
+  return CURATED_PLATFORM.includes(platform);
 }

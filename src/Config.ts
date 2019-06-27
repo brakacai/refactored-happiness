@@ -2,7 +2,7 @@ import * as os from "os";
 import * as fs from "fs";
 import * as path from "path";
 import { prompt, Questions } from "inquirer";
-import { getFromBungie, isValidPlatform } from "./Utils";
+import { getFromBungie, isPlatformSupported } from "./Utils";
 import { BungieMembershipType, ServerResponse } from "bungie-api-ts/common";
 import { UserInfoCard } from "bungie-api-ts/user/interfaces";
 
@@ -14,7 +14,6 @@ export interface ConfigFileData {
   apiKey: string;
   platform: BungieMembershipType;
 }
-
 type PartialConfigFileData = {
   [P in keyof ConfigFileData]?: ConfigFileData[P];
 };
@@ -94,12 +93,20 @@ export class ConfigFile {
     return ConfigFile.createNewConfig();
   }
 
+  /**
+   * Create a Config from the configFileData
+   * @param configFileData the data on which to build the Config
+   */
   private constructor(configFileData: ConfigFileData) {
     this.data = configFileData;
   }
   // #endregion
 
   // #region File Manipulation functions
+  /**
+   * Check if the file at the configFilePath is readable.
+   * @param configFilePath a path to a configFile
+   */
   private static hasConfigFile(configFilePath: string): boolean {
     try {
       fs.accessSync(configFilePath, fs.constants.R_OK);
@@ -109,14 +116,22 @@ export class ConfigFile {
     }
   }
 
+  /**
+   * Check if an object is a @interface ConfigFileData
+   * @param obj an object to check
+   */
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private static isConfigFileValid(obj: any): obj is ConfigFileData {
     if (!obj || !obj.playerId || !obj.apiKey) {
       return false;
     }
-    return isValidPlatform(obj.platform);
+    return isPlatformSupported(obj.platform);
   }
 
+  /**
+   * Save the config file in the `CONFIG_FOLDER_NAME`
+   * @param configFileData the config to write
+   */
   private static writeConfig(configFileData: ConfigFileData): void {
     const fullDirPath = path.join(os.homedir(), this.CONFIG_FOLDER_NAME);
     try {
