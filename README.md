@@ -18,7 +18,6 @@ A headless Discord Rich Experience provider for Destiny 2
  - [Prettier formatter for VS Code](https://github.com/prettier/prettier-vscode) to beef up VS Code formatter.
  > Some settings are provided for those two directly in `.vscode/settings.json`
 
-## Collaborator
 ## Contributors ✨
 
 Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
