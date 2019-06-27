@@ -1,4 +1,3 @@
 {
-  "prettier.endOfLine": "lf",
-  "prettier.eslintIntegration": true
+  "prettier.endOfLine": "lf"
 }

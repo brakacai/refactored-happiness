@@ -11,8 +11,8 @@
     "test": "nyc mocha",
     "build": "rimraf dist && tsc",
     "start": "node ./dist/index.js",
-    "lint": "eslint \"{{test,src}/**/*.ts,*.js}\"",
-    "lint-fix": "eslint --fix \"{{test,src}/**/*.ts,*.js}\"",
+    "lint": "prettier --check \"{{test,src}/**/*.ts,*.js}\" && eslint \"{{test,src}/**/*.ts,*.js}\"",
+    "lint-fix": "prettier --write \"{{test,src}/**/*.ts,*.js}\" && eslint --fix \"{{test,src}/**/*.ts,*.js}\"",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
     "semantic-release": "semantic-release"
   },
@@ -45,6 +45,7 @@
     "cz-conventional-changelog": "^2.1.0",
     "eslint": "^6.0.1",
     "eslint-config-prettier": "^6.0.0",
+    "husky": "^2.4.1",
     "inquirer": "^6.4.1",
     "lint-staged": "^8.2.1",
     "mocha": "^6.1.4",
@@ -67,13 +68,15 @@
     }
   },
   "lint-staged": {
-    "*.{css,json,md}": [
-      "prettier --write",
-      "git add"
-    ],
-    "*.{ts,js}": [
-      "eslint --fix",
-      "git add"
-    ]
+    "linters": {
+      "*.{ts,js,css,json,md}": [
+        "prettier --write",
+        "git add"
+      ],
+      "*.{ts,js}": [
+        "eslint --fix",
+        "git add"
+      ]
+    }
   }
 }

@@ -1,4 +1,7 @@
-import { DestinyComponentType, BungieMembershipType } from "bungie-api-ts/destiny2";
+import {
+  DestinyComponentType,
+  BungieMembershipType
+} from "bungie-api-ts/destiny2";
 import { get } from "request";
 
 /**
@@ -45,14 +48,16 @@ export async function getFromBungie<T>(
 /**
  * Supported BungieMembershipType.
  */
-export const CURATED_PLATFORM: BungieMembershipType[] = [BungieMembershipType.TigerBlizzard,BungieMembershipType.TigerPsn,BungieMembershipType.TigerXbox];
+export const CURATED_PLATFORM: BungieMembershipType[] = [
+  BungieMembershipType.TigerBlizzard,
+  BungieMembershipType.TigerPsn,
+  BungieMembershipType.TigerXbox
+];
 
 /**
  * Check if the BungieMembershipType is supported/valid.
  * @param platform the BungieMembershipType if all's good.
  */
-export function isPlatformSupported(
-  platform: number
-): boolean {
+export function isPlatformSupported(platform: number): boolean {
   return CURATED_PLATFORM.includes(platform);
 }
