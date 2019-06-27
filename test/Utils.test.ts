@@ -14,11 +14,10 @@ describe("Utils", () => {
       });
     });
 
-    it("should return false for non-curated platforms", () => {
-      [BungieMembershipType.None, BungieMembershipType.BungieNext, BungieMembershipType.All].forEach(platform => {
+    it("should return false for non-curated platforms", () => {      [BungieMembershipType.None, BungieMembershipType.BungieNext, BungieMembershipType.All].forEach(platform => {
         expect(isPlatformSupported(platform), `${platform} is wrongly recognized`)
           .to.be.false;
       });
     });
   });
-});
+});   
