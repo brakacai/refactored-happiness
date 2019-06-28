@@ -34,6 +34,14 @@ describe("Utils", () => {
       requestGetStub = sandbox.stub(request, "get");
     });
 
+    afterEach(() => {
+      sandbox.reset();
+    });
+
+    after(() => {
+      sandbox.restore();
+    });
+
     it("should call the API with params properly built without components", () => {
       const params: BungieAPIParams = { uri: "my/awesome/service/" };
       const apiKey = "myawesomeapikey";
@@ -60,7 +68,7 @@ describe("Utils", () => {
       });
     });
 
-    it("should call the API with params properly built with one component", () => {
+    it("should call the API with params properly built with multiple components", () => {
       const params: BungieAPIParams = { uri: "my/awesome/service/", components: [42, 43] };
       const apiKey = "myawesomeapikey";
 
@@ -71,14 +79,6 @@ describe("Utils", () => {
         headers: { "X-API-Key": apiKey },
         json: true
       });
-    });
-
-    afterEach(() => {
-      sandbox.reset();
-    });
-
-    after(() => {
-      sandbox.restore();
     });
   });
 });
