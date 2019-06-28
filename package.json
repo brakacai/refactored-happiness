@@ -18,12 +18,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/louis-bompart/refactored-happiness.git"
+    "url": "https://github.com/brakacai/refactored-happiness.git"
   },
   "author": "Louis Bompart",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/louis-bompart/refactored-happiness/issues"
+    "url": "https://github.com/brakacai/refactored-happiness/issues"
   },
   "homepage": "https://github.com/louis-bompart/refactored-happiness#readme",
   "dependencies": {
