@@ -1,6 +1,6 @@
 {
   "projectName": "discord-ghost",
-  "projectOwner": "louis-bompart",
+  "projectOwner": "brakacai",
   "repoType": "github",
   "repoHost": "https://github.com",
   "files": [
@@ -22,6 +22,15 @@
         "doc",
         "ideas",
         "infra"
+      ]
+    },
+    {
+      "login": "TalenTaylor",
+      "name": "TalenTaylor",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/52544870?v=4",
+      "profile": "https://github.com/TalenTaylor",
+      "contributions": [
+        "bug"
       ]
     }
   ],
