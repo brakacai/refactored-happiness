@@ -12,7 +12,7 @@ import {
   DestinyPlaceDefinition,
   DestinyClassDefinition
 } from "bungie-api-ts/destiny2/interfaces";
-import { getFromBungie } from "./Utils";
+import { getFromBungie, isRunning } from "./Utils";
 import { ServerResponse, PlatformErrorCodes } from "bungie-api-ts/common";
 import { createHash } from "crypto";
 import { System, DefaultSystem } from "./System";
@@ -73,61 +73,81 @@ export class Client {
 
   public start(): void {
     if (!this.interval) {
-      console.log("Starting service");
-      this.interval = setInterval(async () => {
-        let response;
-        try {
-          response = await this.getCharacterInformation();
-        } catch (error) {
-          throw error;
-        }
-
-        const currentCharacterId = this.getCurrentCharacterId(response);
-        if (!currentCharacterId) {
-          return this.stop();
-        }
-
-        const currentActivity = this.database.getFromDatabase<DestinyActivityDefinition>(
-          "DestinyActivityDefinition",
-          response.characterActivities.data[currentCharacterId].currentActivityHash
-        );
-
-        let additionalInfos;
-
-        if (currentActivity.directActivityModeHash) {
-          const activityMode = this.database.getFromDatabase<DestinyActivityModeDefinition>(
-            "DestinyActivityModeDefinition",
-            currentActivity.directActivityModeHash
-          );
-          additionalInfos = activityMode;
-        } else {
-          const destination = this.database.getFromDatabase<DestinyPlaceDefinition>(
-            "DestinyPlaceDefinition",
-            currentActivity.placeHash
-          );
-          additionalInfos = destination;
-        }
-
-        const smallImageKey = Client.System.path.parse(additionalInfos.displayProperties.icon).name;
-        const currentCharacterData = response.characters.data[currentCharacterId];
-        const currentCharacterRace = this.database.getFromDatabase<DestinyClassDefinition>(
-          "DestinyClassDefinition",
-          currentCharacterData.classHash
-        );
-
-        this.discordRpc.setActivity({
-          state: this.getState(currentActivity, additionalInfos.displayProperties.name),
-          details: additionalInfos.displayProperties.name,
-          largeImageKey: this.getLargeImageKey(currentActivity),
-          largeImageText: currentActivity.displayProperties.name,
-          smallImageKey: this.getSmallImageKey(smallImageKey),
-          smallImageText: `${currentCharacterRace.displayProperties.name} - ${currentCharacterData.light}`,
-          startTimestamp: Date.parse(response.characterActivities.data[currentCharacterId].dateActivityStarted)
-        });
-      }, this.refreshRate);
+      const UseAkusCode = true;
+      if (UseAkusCode) {
+        console.log("Starting service");
+        this.interval = setInterval(async () => {
+          isRunning("destiny2.exe", "destiny2", "destiny2").then(async v => {
+            if (v) {
+              console.log("D2 is running! Lets do this.");
+              this.mainCodeBlock();
+            } else {
+              console.log("Destiny2 is not running.");
+              this.discordRpc.clearActivity();
+              console.log("cleared rpc.");
+            }
+          });
+        }, this.refreshRate);
+      } else {
+        console.log("Starting service");
+        this.interval = setInterval(async () => {
+          console.log("checking...");
+          this.mainCodeBlock();
+        }, this.refreshRate);
+      }
     }
   }
+  private async mainCodeBlock() {
+    let response;
+    try {
+      response = await this.getCharacterInformation();
+    } catch (error) {
+      throw error;
+    }
 
+    const currentCharacterId = this.getCurrentCharacterId(response);
+    if (!currentCharacterId) {
+      return this.stop();
+    }
+
+    const currentActivity = this.database.getFromDatabase<DestinyActivityDefinition>(
+      "DestinyActivityDefinition",
+      response.characterActivities.data[currentCharacterId].currentActivityHash
+    );
+
+    let additionalInfos;
+
+    if (currentActivity.directActivityModeHash) {
+      const activityMode = this.database.getFromDatabase<DestinyActivityModeDefinition>(
+        "DestinyActivityModeDefinition",
+        currentActivity.directActivityModeHash
+      );
+      additionalInfos = activityMode;
+    } else {
+      const destination = this.database.getFromDatabase<DestinyPlaceDefinition>(
+        "DestinyPlaceDefinition",
+        currentActivity.placeHash
+      );
+      additionalInfos = destination;
+    }
+
+    const smallImageKey = Client.System.path.parse(additionalInfos.displayProperties.icon).name;
+    const currentCharacterData = response.characters.data[currentCharacterId];
+    const currentCharacterRace = this.database.getFromDatabase<DestinyClassDefinition>(
+      "DestinyClassDefinition",
+      currentCharacterData.classHash
+    );
+
+    this.discordRpc.setActivity({
+      state: this.getState(currentActivity, additionalInfos.displayProperties.name),
+      details: additionalInfos.displayProperties.name,
+      largeImageKey: this.getLargeImageKey(currentActivity),
+      largeImageText: currentActivity.displayProperties.name,
+      smallImageKey: this.getSmallImageKey(smallImageKey),
+      smallImageText: `${currentCharacterRace.displayProperties.name} - ${currentCharacterData.light}`,
+      startTimestamp: Date.parse(response.characterActivities.data[currentCharacterId].dateActivityStarted)
+    });
+  }
   private getCurrentCharacterId(response: DestinyCharacterActivitiesComponentResponse): string {
     let currentCharacterId: string;
     Object.keys(response.characterActivities.data).forEach(characterId => {
