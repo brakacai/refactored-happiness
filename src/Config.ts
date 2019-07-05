@@ -195,7 +195,7 @@ export class ConfigFile {
       !playersInfoResponse.Response.length ||
       playersInfoResponse.ErrorCode !== PlatformErrorCodes.Success
     ) {
-      const error = new Error("Error occured while retrieving the player:");
+      const error = new Error("Error occured while retrieving the player");
       error.stack = JSON.stringify(playersInfoResponse);
       throw error;
     }
