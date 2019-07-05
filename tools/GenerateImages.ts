@@ -9,7 +9,7 @@ links.forEach(link => {
     sharp(val)
       .resize(512, 512)
       .toFile(
-        `E:/Documents/icons/${link.substring(
+        `D:/Documents/icons/${link.substring(
           "https://Bungie.net/common/destiny2_content/icons/DestinyActivityModeDefinition_".length
         )}`
       );
@@ -42,7 +42,7 @@ links2.forEach(link => {
       })
       .then(data => {
         sharp(data).toFile(
-          `E:/Documents/icons/${crypto
+          `D:/Documents/icons/${crypto
             .createHash("md5")
             .update(path.parse(new URL(link).pathname).name)
             .digest("hex")}.jpg`
