@@ -1,18 +1,31 @@
 import rq from "request-promise-native";
 import path from "path";
+import fs from "fs";
 import sharp from "sharp";
 import crypto from "crypto";
 import { links, links2 } from "./links";
 
+const imgDest = path.join(__dirname, "..", "generated_icons");
+
+if (!fs.existsSync(imgDest)) {
+  fs.mkdir(imgDest, { recursive: false }, err => {
+    if (err) {
+      console.log(`Error occured while trying to created directory ${imgDest}`);
+      throw err;
+    }
+    console.log(`Successfully created new directory ${imgDest}`);
+  });
+}
+
 links.forEach(link => {
   rq.get(link, { encoding: null }).then(val => {
+    const resultingPath = link.substring(
+      "https://Bungie.net/common/destiny2_content/icons/DestinyActivityModeDefinition_".length
+    );
     sharp(val)
       .resize(512, 512)
-      .toFile(
-        `D:/Documents/icons/${link.substring(
-          "https://Bungie.net/common/destiny2_content/icons/DestinyActivityModeDefinition_".length
-        )}`
-      );
+      .toFile(`${imgDest}/${resultingPath}`);
+    console.log(`Successfully downloaded ${resultingPath} to ${imgDest}`);
   });
 });
 
@@ -41,12 +54,12 @@ links2.forEach(link => {
           .toBuffer();
       })
       .then(data => {
-        sharp(data).toFile(
-          `D:/Documents/icons/${crypto
-            .createHash("md5")
-            .update(path.parse(new URL(link).pathname).name)
-            .digest("hex")}.jpg`
-        );
+        const resultingPath = crypto
+          .createHash("md5")
+          .update(path.parse(new URL(link).pathname).name)
+          .digest("hex");
+        sharp(data).toFile(`${imgDest}/${resultingPath}.jpg`);
+        console.log(`Successfully downloaded ${resultingPath} to ${imgDest}`);
       });
   });
 });
