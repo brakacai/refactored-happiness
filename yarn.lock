@@ -259,15 +259,14 @@
   optionalDependencies:
     electron-winstaller "^3.0.4"
 
-"@electron-forge/maker-zip@6.0.0-beta.39":
-  version "6.0.0-beta.39"
-  resolved "https://registry.yarnpkg.com/@electron-forge/maker-zip/-/maker-zip-6.0.0-beta.39.tgz#97276b00716015a4adc82602db69e89ef31239cc"
+"@electron-forge/maker-zip@6.0.0-beta.41":
+  version "6.0.0-beta.41"
+  resolved "https://registry.yarnpkg.com/@electron-forge/maker-zip/-/maker-zip-6.0.0-beta.41.tgz#7e2af095e815f1fb888db96bcb23603561b9d0b5"
   dependencies:
-    "@electron-forge/maker-base" "6.0.0-beta.39"
-    "@electron-forge/shared-types" "6.0.0-beta.39"
+    "@electron-forge/maker-base" "6.0.0-beta.41"
+    "@electron-forge/shared-types" "6.0.0-beta.41"
     cross-zip "^2.1.5"
-    fs-extra "^7.0.0"
-    pify "^4.0.0"
+    fs-extra "^8.1.0"
 
 "@electron-forge/plugin-auto-unpack-natives@^6.0.0-beta.41":
   version "6.0.0-beta.41"
